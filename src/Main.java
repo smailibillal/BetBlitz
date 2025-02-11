@@ -10,13 +10,6 @@ public class Main {
             // Set Look and Feel
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             
-            // Créer la fenêtre de connexion mais ne pas l'afficher tout de suite
-            LoginFenetre loginFenetre = new LoginFenetre(null);  // On passera la connexion plus tard
-            
-            // Afficher le splash screen avec la référence à la fenêtre de connexion
-            SplashScreen splash = new SplashScreen();
-            splash.setVisible(true);
-            
             // Vérifier que le driver est disponible
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
@@ -36,11 +29,11 @@ public class Main {
                     ""
                 );
                 
-                // Mettre à jour la connexion dans la fenêtre de login
-                loginFenetre.setConnection(connexion);
-                
-                // Démarrer le splash screen avec la référence à la fenêtre de connexion
-                splash.startProgress(loginFenetre);
+                // Créer et afficher directement la fenêtre de login
+                SwingUtilities.invokeLater(() -> {
+                    LoginFenetre loginFenetre = new LoginFenetre(connexion);
+                    loginFenetre.setVisible(true);
+                });
                 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null,
