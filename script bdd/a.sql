@@ -1,26 +1,21 @@
+-- Création de la base de données
 DROP DATABASE IF EXISTS stocks_db;
 CREATE DATABASE stocks_db;
 USE stocks_db;
 
-
-
--- Suppression des tables si elles existent
-DROP TABLE IF EXISTS pari;
-DROP TABLE IF EXISTS utilisateur;
-
--- Création de la table utilisateur (au singulier)
+-- Table utilisateur
 CREATE TABLE utilisateur (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
-    capital DECIMAL(10,2) DEFAULT 100.00,
     age INT,
-    pays VARCHAR(50)
+    pays VARCHAR(50),
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    capital DECIMAL(10,2) DEFAULT 1000.00
 );
 
-
+-- Table match
 CREATE TABLE `match` (
     id INT PRIMARY KEY,
     competition VARCHAR(50),
@@ -32,19 +27,7 @@ CREATE TABLE `match` (
     score_away INT
 );
 
-
-INSERT INTO `match` (id, competition, home_team, away_team, date_match, status, score_home, score_away) VALUES
-(1, 'Ligue 1', 'Paris Saint-Germain', 'Olympique Lyonnais', DATE_SUB(NOW(), INTERVAL 5 DAY), 'FINISHED', 3, 1),
-(2, 'Premier League', 'Manchester City', 'Liverpool', DATE_SUB(NOW(), INTERVAL 3 DAY), 'FINISHED', 2, 2),
-(3, 'La Liga', 'Real Madrid', 'Barcelona', DATE_SUB(NOW(), INTERVAL 1 DAY), 'FINISHED', 3, 2),
-(4, 'Serie A', 'Juventus', 'Inter Milan', DATE_ADD(NOW(), INTERVAL 1 DAY), 'SCHEDULED', NULL, NULL),
-(5, 'Bundesliga', 'Bayern Munich', 'Borussia Dortmund', DATE_ADD(NOW(), INTERVAL 2 DAY), 'SCHEDULED', NULL, NULL),
-(6, 'Ligue 1', 'Monaco', 'Marseille', DATE_ADD(NOW(), INTERVAL 3 DAY), 'SCHEDULED', NULL, NULL),
-(7, 'Premier League', 'Arsenal', 'Chelsea', DATE_ADD(NOW(), INTERVAL 4 DAY), 'SCHEDULED', NULL, NULL),
-(8, 'La Liga', 'Atletico Madrid', 'Sevilla', DATE_ADD(NOW(), INTERVAL 5 DAY), 'SCHEDULED', NULL, NULL);
-
-
--- Création de la table pari (au singulier)
+-- Table pari
 CREATE TABLE pari (
     id INT PRIMARY KEY AUTO_INCREMENT,
     utilisateur_id INT,
@@ -59,7 +42,8 @@ CREATE TABLE pari (
     FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(id)
 );
 
--- Insertion des utilisateurs de la classe
+
+-- Utilisateurs
 INSERT INTO utilisateur (username, password, email, date_creation, capital, age, pays) VALUES
 ('billal', 'billal123', 'billal@betblitz.fr', '2024-01-15 10:00:00', 1500.00, 20, 'France'),
 ('coumba', 'coumba123', 'coumba@betblitz.fr', '2024-01-15 10:05:00', 2000.00, 20, 'France'),
@@ -70,7 +54,17 @@ INSERT INTO utilisateur (username, password, email, date_creation, capital, age,
 ('wafa', 'wafa123', 'wafa@betblitz.fr', '2024-01-15 10:30:00', 2200.00, 20, 'France'),
 ('assil', 'assil123', 'assil@betblitz.fr', '2024-01-15 10:35:00', 1600.00, 20, 'France');
 
--- Insertion de paris variés pour chaque utilisateur
+-- Matchs passés et à venir
+INSERT INTO `match` (id, competition, home_team, away_team, date_match, status, score_home, score_away) VALUES
+(1, 'Ligue 1', 'Paris Saint-Germain', 'Olympique Lyonnais', DATE_SUB(NOW(), INTERVAL 5 DAY), 'FINISHED', 3, 1),
+(2, 'Premier League', 'Manchester City', 'Liverpool', DATE_SUB(NOW(), INTERVAL 3 DAY), 'FINISHED', 2, 2),
+(3, 'La Liga', 'Real Madrid', 'Barcelona', DATE_SUB(NOW(), INTERVAL 1 DAY), 'FINISHED', 3, 2),
+(4, 'Serie A', 'Juventus', 'Inter Milan', DATE_ADD(NOW(), INTERVAL 1 DAY), 'SCHEDULED', NULL, NULL),
+(5, 'Bundesliga', 'Bayern Munich', 'Borussia Dortmund', DATE_ADD(NOW(), INTERVAL 2 DAY), 'SCHEDULED', NULL, NULL),
+(6, 'Ligue 1', 'Monaco', 'Marseille', DATE_ADD(NOW(), INTERVAL 3 DAY), 'SCHEDULED', NULL, NULL),
+(7, 'Premier League', 'Arsenal', 'Chelsea', DATE_ADD(NOW(), INTERVAL 4 DAY), 'SCHEDULED', NULL, NULL),
+(8, 'La Liga', 'Atletico Madrid', 'Sevilla', DATE_ADD(NOW(), INTERVAL 5 DAY), 'SCHEDULED', NULL, NULL);
+
 INSERT INTO pari (utilisateur_id, home_team, away_team, type, cote, montant, date_pari, statut) VALUES
 -- Paris de Billal (fan du Barça, parie gros sur son équipe)
 (1, 'Barcelona', 'Real Madrid', '1', 2.10, 300.00, '2024-02-01 20:00:00', 'GAGNE'),
