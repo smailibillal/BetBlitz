@@ -241,9 +241,15 @@ public class SignupFenetre extends JFrame {
         }
 
         try {
-            Utilisateur nouvelUtilisateur = new Utilisateur(username, password, email);
-            nouvelUtilisateur.setAge(age);
-            nouvelUtilisateur.setPays(pays);
+            // Créer un nouvel utilisateur avec un capital initial de 1000€
+            Utilisateur nouvelUtilisateur = new Utilisateur(username, password, email, 1000.0);
+            
+            if (ageStr != null && !ageStr.isEmpty()) {
+                nouvelUtilisateur.setAge(Integer.parseInt(ageStr));
+            }
+            if (pays != null) {
+                nouvelUtilisateur.setPays(pays);
+            }
             
             if (utilisateurDAO.creerUtilisateur(nouvelUtilisateur)) {
                 JOptionPane.showMessageDialog(this,

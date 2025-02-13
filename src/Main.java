@@ -29,6 +29,10 @@ public class Main {
                     ""
                 );
                 
+                // Démarrer le gestionnaire de paris
+                GestionnaireParis gestionnaire = new GestionnaireParis(connexion);
+                gestionnaire.demarrer();
+                
                 // Créer et afficher directement la fenêtre de login
                 SwingUtilities.invokeLater(() -> {
                     LoginFenetre loginFenetre = new LoginFenetre(connexion);

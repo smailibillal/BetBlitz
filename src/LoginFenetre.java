@@ -12,8 +12,10 @@ public class LoginFenetre extends JFrame {
     private static final int MIN_HEIGHT = 500;
     private static final int PREFERRED_WIDTH = 400;
     private static final int PREFERRED_HEIGHT = 600;
+    private Connection connexion;
 
     public LoginFenetre(Connection connexion) {
+        this.connexion = connexion;
         this.utilisateurDAO = new UtilisateurDAO(connexion);
         setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         setPreferredSize(new Dimension(PREFERRED_WIDTH, PREFERRED_HEIGHT));
@@ -172,20 +174,21 @@ public class LoginFenetre extends JFrame {
         String password = new String(passwordField.getPassword());
 
         try {
+            UtilisateurDAO utilisateurDAO = new UtilisateurDAO(connexion);
             Utilisateur utilisateur = utilisateurDAO.authentifier(username, password);
+            
             if (utilisateur != null) {
-                utilisateurConnecte = utilisateur;
-                new DashboardFenetre(utilisateur);
                 dispose();
+                new DashboardFenetre(utilisateur, connexion).setVisible(true);
             } else {
-                JOptionPane.showMessageDialog(this, 
+                JOptionPane.showMessageDialog(this,
                     "Nom d'utilisateur ou mot de passe incorrect",
-                    "Erreur de connexion",
+                    "Erreur d'authentification",
                     JOptionPane.ERROR_MESSAGE);
             }
-        } catch (SQLException ex) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                "Erreur lors de la connexion: " + ex.getMessage(),
+                "Erreur lors de la connexion: " + e.getMessage(),
                 "Erreur",
                 JOptionPane.ERROR_MESSAGE);
         }

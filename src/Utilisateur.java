@@ -6,20 +6,23 @@ public class Utilisateur {
     private Integer age;
     private String pays;
     private String dateCreation;
+    private double capital;
 
-    public Utilisateur(int id, String username, String password, String email, String dateCreation) {
+    public Utilisateur(int id, String username, String password, String email, String dateCreation, double capital) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.dateCreation = dateCreation;
+        this.capital = capital;
     }
 
     // Constructeur sans id pour la création
-    public Utilisateur(String username, String password, String email) {
+    public Utilisateur(String username, String password, String email, double capital) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.capital = capital;
     }
 
     // Getters et Setters
@@ -44,5 +47,11 @@ public class Utilisateur {
     }
     public void setPays(String pays) {
         this.pays = pays;
+    }
+    public double getCapital() {
+        return capital;
+    }
+    public void setCapital(double capital) {
+        this.capital = capital;
     }
 }
